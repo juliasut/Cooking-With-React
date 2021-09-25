@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+ import React, { Component } from 'react'
 import { ThemeContext } from './App'
 
 export default class Counter extends Component {
@@ -10,7 +10,7 @@ export default class Counter extends Component {
     }
   }
   render() {
-    console.log("Render Counter")
+    
     return (
       <ThemeContext.Consumer>
         {style => (
