@@ -1,23 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import IngredientList from './IngredientList';
+import { RecipeContext } from './App';
 
 export default function Recipe(props) {
-  const {
-    id,
-    name,
-    cookTime,
-    servings,
-    instructions,
-    ingredients,
-    handleRecipeDelete,
-  } = props;
+  const { handleRecipeDelete } = useContext(RecipeContext);
+  const { id, name, cookTime, servings, instructions, ingredients } = props;
   return (
     <div className="recipe">
       <div className="recipe__header">
         <h3 className="recipe__title">{name}</h3>
         <div>
           <button className="btn btn--primary mr-1">Edit</button>
-          <button className="btn btn--danger" onClick={() => handleRecipeDelete(id)}>
+          <button
+            className="btn btn--danger"
+            onClick={() => handleRecipeDelete(id)}
+          >
             Delete
           </button>
         </div>
