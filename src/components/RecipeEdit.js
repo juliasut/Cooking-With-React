@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import RecipeIngredientEdit from './RecipeIngredientEdit';
 import { RecipeContext } from './App';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function RecipeEdit({ recipe }) {
   const { handleRecipeChange, handleRecipeSelect } = useContext(RecipeContext);
@@ -16,12 +17,27 @@ export default function RecipeEdit({ recipe }) {
     handleChange({ ingredients: newIngredients });
   }
 
+  function handleIngredientAdd() {
+    const newIngredient = {
+      id: uuidv4(),
+      name: '',
+      amout: '',
+    };
+    handleChange({ ingredients: [...recipe.ingredients, newIngredient] });
+  }
+
+  function handleIngredientDelete(id) {
+    handleChange({
+      ingredients: recipe.ingredients.filter((i) => i.id !== id),
+    });
+  }
+
   return (
     <div className="recipe-edit">
       <div className="recipe-edit__remove-button-container">
         <button
           className="btn recipe-edit__remove-button"
-          
+          onClick={() => handleRecipeSelect(undefined)}
         >
           &times;
         </button>
@@ -35,7 +51,7 @@ export default function RecipeEdit({ recipe }) {
           name="name"
           id="name"
           value={recipe.name}
-          onInput={(e) => handleChange({ name: e.target.value })}
+          onChange={(e) => handleChange({ name: e.target.value })}
           className="recipe-edit__input"
         />
         <label htmlFor="cookTime" className="recipe-edit__label">
@@ -46,7 +62,7 @@ export default function RecipeEdit({ recipe }) {
           name="cookTime"
           id="cookTime"
           value={recipe.cookTime}
-          onInput={(e) => handleChange({ cookTime: e.target.value })}
+          onChange={(e) => handleChange({ cookTime: e.target.value })}
           className="recipe-edit__input"
         />
         <label htmlFor="servings" className="recipe-edit__label">
@@ -58,7 +74,7 @@ export default function RecipeEdit({ recipe }) {
           name="servings"
           id="servings"
           value={recipe.servings}
-          onInput={(e) =>
+          onChange={(e) =>
             handleChange({ servings: parseInt(e.target.value) || '' })
           }
           className="recipe-edit__input"
@@ -71,7 +87,7 @@ export default function RecipeEdit({ recipe }) {
           id="instructions"
           className="recipe-edit__input"
           value={recipe.instructions}
-          onInput={(e) => handleChange({ instructions: e.target.value })}
+          onChange={(e) => handleChange({ instructions: e.target.value })}
         />
       </div>
       <br />
@@ -85,10 +101,16 @@ export default function RecipeEdit({ recipe }) {
             key={ingredient.id}
             ingredient={ingredient}
             handleIngredientChange={handleIngredientChange}
+            handleIngredientDelete={handleIngredientDelete}
           />
         ))}
         <div className="recipe-edit__add-ingredient-btn-container">
-          <button className="btn btn--primary">Add Ingredient</button>
+          <button
+            className="btn btn--primary"
+            onClick={() => handleIngredientAdd()}
+          >
+            Add Ingredient
+          </button>
         </div>
       </div>
     </div>
