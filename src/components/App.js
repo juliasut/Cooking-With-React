@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     const recipeJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (recipeJSON) setRecipes(JSON.parse(recipeJSON));
+    if (recipeJSON != null) setRecipes(JSON.parse(recipeJSON));
   }, []);
 
   useEffect(() => {
@@ -27,6 +27,7 @@ function App() {
     handleRecipeAdd,
     handleRecipeDelete,
     handleRecipeSelect,
+    handleRecipeChange,
   };
 
   function handleRecipeSelect(id) {
@@ -46,6 +47,15 @@ function App() {
     setRecipes([...recipes, newRecipe]);
   }
 
+  function handleRecipeChange(id, recipe) {
+    // copy the recipes arr
+    const newRecipes = [...recipes];
+    // find id of the new edited recipe
+    const index = newRecipes.findIndex((r) => r.id === id);
+    newRecipes[index] = recipe;
+    setRecipes(newRecipes);
+  }
+
   function handleRecipeDelete(id) {
     setRecipes(recipes.filter((recipe) => recipe.id !== id));
   }
@@ -53,7 +63,7 @@ function App() {
   return (
     <RecipeContext.Provider value={recipeContextValue}>
       <RecipeList recipes={recipes} />
-      {selectedRecipe && <RecipeEdit recipe={selectedRecipe}/>}
+      {selectedRecipe && <RecipeEdit recipe={selectedRecipe} />}
     </RecipeContext.Provider>
   );
 }
